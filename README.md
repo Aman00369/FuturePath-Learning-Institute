@@ -1,2 +1,2 @@
-# Bright-Mind-Institute
+# FuturePath Learning Institute
 It is about my Institute 
