@@ -67,7 +67,7 @@
         }
 
         .header.scrolled {
-           padding: .9rem 0;
+            padding: .9rem 0;
         }
 
         .nav-container {
@@ -468,9 +468,9 @@
 
         .teacher-title {
             font-size: 1.1rem;
-    color: rgba(255, 255, 255, .9);
-    margin-top: .4rem;
-    font-weight: 700;
+            color: rgba(255, 255, 255, .9);
+            margin-top: .4rem;
+            font-weight: 700;
         }
 
         .mini-cards {
@@ -4443,57 +4443,72 @@ Jan1 | Capital | 5000| Jan5 | Rent    | 1000
                 }
 
                 // Fallback — smart generic
-                return r([
-                    `<span class="aie">🤔</span>Great question! I may not have the full answer stored for "<strong>${input.substring(0, 40)}</strong>", but here's what I know:<br><br>For detailed help on this topic, <strong>Aman Sir</strong> would be the perfect person to ask! He loves interesting questions like this! 😄<br><br>📞 <strong>8910517578</strong> | 💬 <a href="https://wa.me/918910517578" target="_blank" style="color:#10b981;font-weight:700;">WhatsApp</a><br><br>Or try rephrasing — ask "what is [topic]" or "explain [topic]"! 🚀`,
-                    `<span class="aie">🧠</span>Hmm, let me think about "<strong>${input.substring(0, 40)}</strong>"...<br><br>I have a huge brain but sometimes I need a little hint! 😄 Try asking:<br>• "What is [topic]?"<br>• "Explain [topic] simply"<br>• "How does [topic] work?"<br><br>Or ask about: Science 🔬 | Maths 📐 | Coding 💻 | Tally 🧾 | MS Office 📊 | Aman Sir 👨‍💻`,
-                    `<span class="aie">🤖</span>I'm still expanding my brain for "<strong>${input.substring(0, 40)}</strong>"! 😅<br><br>But I'm great at: Science, Maths, CS/Coding, Tally, MS Office, History, and everything about FuturePath!<br><br>Ask me something like "What is photosynthesis?" or "Explain Python" — you'll be impressed! 😎`
-                ]);
+                // Fallback — smart generic
+                return `<span class="aie">🤔</span>Great question about "<strong>${input.substring(0, 40)}</strong>"!<br><br>
+I know about these topics — try asking me:<br>
+🧪 Science: oxygen, photosynthesis, Newton, gravity, atoms<br>
+📐 Maths: algebra, geometry, statistics, probability<br>
+💻 CS: Python, Java, HTML, CSS, database, internet<br>
+🧾 Tally: GST, ledger, accounting, vouchers<br>
+📊 MS Office: Excel, Word, PowerPoint<br>
+🏫 About FuturePath: fees, location, timing, Aman Sir<br><br>
+Or call Aman Sir directly: <a href="tel:8910517578" style="color:#fbbf24;font-weight:700;">8910517578</a> 📞`;
             }
 
             // ── Send Message ──
-async function aiSendMessage() {
-    const inp = document.getElementById('aiInput');
-    const text = inp.value.trim();
-    if (!text) return;
-    addUserMsg(text);
-    inp.value = ''; aiAutoResize(inp);
-    showTyping();
+            async function aiSendMessage() {
+                const inp = document.getElementById('aiInput');
+                const text = inp.value.trim();
+                if (!text) return;
+                addUserMsg(text);
+                inp.value = ''; aiAutoResize(inp);
+                showTyping();
 
-    try {
-        const response = await fetch(
-            "https://openrouter.ai/api/v1/chat/completions",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer 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",
-                    "HTTP-Referer": "http://localhost",
-                    "X-Title": "BrainBot"
-                },
-                body: JSON.stringify({
-                    model: "mistralai/mistral-7b-instruct:free",
-                    messages: [
+                try {
+                    const response = await fetch(
+                        "https://openrouter.ai/api/v1/chat/completions",
                         {
-                            role: "system",
-                            content: "You are BrainBot for FuturePath Learning Institute by Aman Sir in Phoolbagan Kolkata. Fees from ₹1200/month, contact 8910517578. Answer helpfully and friendly."
-                        },
-                        {
-                            role: "user",
-                            content: text
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": "Bearer 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",
+                                "HTTP-Referer": "https://aman00369.github.io/FuturePath-Learning-Institute/",
+                                "X-Title": "BrainBot"
+                            },
+                            body: JSON.stringify({
+                                model: "mistralai/mistral-7b-instruct:free",
+                                messages: [
+                                    {
+                                        role: "system",
+                                        content: "You are BrainBot for FuturePath Learning Institute by Aman Sir in Phoolbagan Kolkata. Fees from ₹1200/month, contact 8910517578. Answer helpfully, friendly and concisely in 3-5 lines max."
+                                    },
+                                    {
+                                        role: "user",
+                                        content: text
+                                    }
+                                ]
+                            })
                         }
-                    ]
-                })
-            }
-        );
-        const data = await response.json();
-        hideTyping();
-        addBotMsg(data.choices[0].message.content);
-    } catch(e) {
-        hideTyping();
-        addBotMsg(getSmartResponse(text));
-    }
-}
+                    );
 
+                    const data = await response.json();
+                    hideTyping();
+
+                    // Check if API returned valid response
+                    if (data.choices && data.choices[0] && data.choices[0].message) {
+                        const reply = data.choices[0].message.content;
+                        addBotMsg(reply.replace(/\n/g, '<br>'));
+                    } else {
+                        // API failed — use local smart response
+                        addBotMsg(getSmartResponse(text));
+                    }
+
+                } catch (e) {
+                    hideTyping();
+                    // Network error — use local smart response
+                    addBotMsg(getSmartResponse(text));
+                }
+            }
 
 
 
