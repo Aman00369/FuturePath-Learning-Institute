@@ -2149,329 +2149,490 @@
         }
 
         /* 🤖 BRAINBOT */
+
+
         :root {
-            --pink: #ec4899;
-            --orange: #f59e0b;
-            --green: #10b981;
-            --blue: #3b82f6;
-            --purple: #8b5cf6;
-            --dark: #1f2937;
-            --darker: #111827;
-            --light: #f9fafb;
-            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            --pink-shadow: 0 10px 30px rgba(236, 72, 153, 0.25);
-
-
-            --ai-pink: #ec4899;
-            --ai-orange: #f59e0b;
-            --ai-green: #10b981;
-            --ai-purple: #8b5cf6;
-            --ai-dark: #0f0f1a;
-            --ai-glass: rgba(255, 255, 255, 0.06);
-            --ai-border: rgba(255, 255, 255, 0.12);
+            --bb-purple: #8b5cf6;
+            --bb-pink: #ec4899;
+            --bb-amber: #f59e0b;
+            --bb-teal: #14b8a6;
+            --bb-green: #10b981;
+            --bb-dark: #07071a;
+            --bb-card: rgba(255, 255, 255, .05);
+            --bb-border: rgba(255, 255, 255, .1);
+            --bb-radius: 26px;
         }
 
+        /* ────────────────────────────────────────────────
+   LAUNCHER BUTTON
+──────────────────────────────────────────────── */
         .ai-launcher {
             position: fixed;
-            bottom: 5.5rem;
-            right: 1.8rem;
+            bottom: 2rem;
+            right: 2rem;
             z-index: 10000;
-            width: 62px;
-            height: 62px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899, #f59e0b);
             border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.7rem;
-            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.55);
-            animation: aiLP 2.5s ease-in-out infinite;
-            transition: transform 0.25s cubic-bezier(.34, 1.56, .64, 1);
+            font-size: 1.75rem;
             outline: none;
+            /* spinning conic gradient */
+            background: conic-gradient(from var(--spin, 0deg), #8b5cf6, #ec4899, #f59e0b, #10b981, #3b82f6, #8b5cf6);
+            animation: launcherSpin 3s linear infinite, launcherPulse 2s ease-in-out infinite;
+            transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .ai-launcher::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background: #07071a;
+            z-index: 0;
+        }
+
+        .ai-launcher .bot-icon {
+            position: relative;
+            z-index: 1;
+            font-size: 1.8rem;
+            filter: drop-shadow(0 0 8px rgba(139, 92, 246, .9))
+        }
+
+        @property --spin {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false
+        }
+
+        @keyframes launcherSpin {
+            to {
+                --spin: 360deg
+            }
+        }
+
+        @keyframes launcherPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(139, 92, 246, .5), 0 8px 32px rgba(139, 92, 246, .4)
+            }
+
+            50% {
+                box-shadow: 0 0 0 12px rgba(139, 92, 246, 0), 0 8px 40px rgba(236, 72, 153, .5)
+            }
         }
 
         .ai-launcher:hover {
-            transform: scale(1.12) rotate(-8deg);
+            transform: scale(1.14) rotate(-12deg)
         }
 
-        .ai-launcher .ai-notif {
+        .ai-notif {
             position: absolute;
-            top: -4px;
-            right: -4px;
+            top: -3px;
+            right: -3px;
+            z-index: 2;
             background: #ef4444;
             color: #fff;
             font-size: .58rem;
             font-weight: 900;
-            width: 18px;
-            height: 18px;
+            width: 19px;
+            height: 19px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid #fff;
-            font-family: 'Poppins', sans-serif;
-            animation: aiBB 1s ease-in-out infinite alternate;
+            border: 2.5px solid #07071a;
+            font-family: 'Nunito', sans-serif;
+            animation: notifBounce 1.1s ease-in-out infinite alternate;
         }
 
-        @keyframes aiLP {
-
-            0%,
-            100% {
-                box-shadow: 0 8px 32px rgba(139, 92, 246, .55), 0 0 0 0 rgba(139, 92, 246, .4);
-            }
-
-            50% {
-                box-shadow: 0 8px 32px rgba(139, 92, 246, .7), 0 0 0 14px rgba(139, 92, 246, 0);
-            }
-        }
-
-        @keyframes aiBB {
+        @keyframes notifBounce {
             from {
-                transform: translateY(0) scale(1);
+                transform: translateY(0) scale(1)
             }
 
             to {
-                transform: translateY(-3px) scale(1.15);
+                transform: translateY(-4px) scale(1.2)
             }
         }
 
+        /* ────────────────────────────────────────────────
+   CHAT WINDOW
+──────────────────────────────────────────────── */
         .ai-window {
             position: fixed;
-            bottom: 5.5rem;
-            right: 1.8rem;
-            width: 390px;
-            max-width: calc(100vw - 2rem);
-            height: 580px;
-            max-height: calc(100vh - 10rem);
+            bottom: 6.5rem;
+            right: 2rem;
+            width: 400px;
+            max-width: calc(100vw - 1.5rem);
+            height: 600px;
+            max-height: calc(100vh - 8rem);
             z-index: 10001;
-            border-radius: 28px;
+            border-radius: var(--bb-radius);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            background: var(--ai-dark);
-            border: 1px solid var(--ai-border);
-            box-shadow: 0 32px 80px rgba(0, 0, 0, .7), inset 0 1px 0 rgba(255, 255, 255, .08);
-            transform: scale(0.85) translateY(30px);
+            background: var(--bb-dark);
+            border: 1px solid var(--bb-border);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, .8), 0 0 0 1px rgba(255, 255, 255, .04), inset 0 1px 0 rgba(255, 255, 255, .07);
+            transform: scale(.8) translateY(40px);
             opacity: 0;
             pointer-events: none;
-            transition: transform 0.4s cubic-bezier(.34, 1.56, .64, 1), opacity 0.3s ease;
+            transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), opacity .3s ease;
             font-family: 'Nunito', sans-serif;
         }
 
         .ai-window.ai-open {
             transform: scale(1) translateY(0);
             opacity: 1;
-            pointer-events: all;
+            pointer-events: all
         }
 
-        .ai-header {
-            padding: 1rem 1.2rem .8rem;
-            background: linear-gradient(135deg, #1a0533, #2d1060, #0d2466);
-            position: relative;
+        /* Aurora background inside window */
+        .ai-aurora {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
             overflow: hidden;
-            flex-shrink: 0;
-            border-bottom: 1px solid var(--ai-border);
+            border-radius: var(--bb-radius);
         }
 
-        .ai-header::before {
+        .ai-aurora::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: conic-gradient(from 0deg at 30% 40%, rgba(139, 92, 246, .12) 0%, rgba(236, 72, 153, .08) 20%, transparent 40%, rgba(20, 184, 166, .07) 60%, rgba(245, 158, 11, .06) 80%, rgba(139, 92, 246, .12) 100%);
+            animation: auroraRot 12s linear infinite;
+        }
+
+        .ai-aurora::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(90deg, rgba(139, 92, 246, .3), rgba(236, 72, 153, .3), rgba(245, 158, 11, .2));
-            animation: aiHS 4s ease-in-out infinite alternate;
+            background: radial-gradient(ellipse 60% 40% at 70% 80%, rgba(139, 92, 246, .15), transparent), radial-gradient(ellipse 50% 50% at 20% 20%, rgba(236, 72, 153, .1), transparent);
+            animation: auroraShift 6s ease-in-out infinite alternate;
         }
 
-        @keyframes aiHS {
+        @keyframes auroraRot {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        @keyframes auroraShift {
             from {
                 opacity: .6;
-                transform: translateX(-10px);
+                transform: scale(1)
             }
 
             to {
                 opacity: 1;
-                transform: translateX(10px);
+                transform: scale(1.05)
+            }
+        }
+
+        /* Stars */
+        .ai-stars {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden
+        }
+
+        .ai-star {
+            position: absolute;
+            border-radius: 50%;
+            background: #fff
+        }
+
+        /* ────────────────────────────────────────────────
+   HEADER
+──────────────────────────────────────────────── */
+        .ai-header {
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+            padding: 1rem 1.2rem .85rem;
+            background: linear-gradient(135deg, rgba(26, 5, 51, .95), rgba(15, 5, 50, .95));
+            border-bottom: 1px solid var(--bb-border);
+            backdrop-filter: blur(10px);
+            cursor: grab;
+        }
+
+        .ai-header:active {
+            cursor: grabbing
+        }
+
+        .ai-header-glow {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            background: linear-gradient(90deg, rgba(139, 92, 246, .2), rgba(236, 72, 153, .18), rgba(245, 158, 11, .12));
+            animation: headerGlow 5s ease-in-out infinite alternate;
+        }
+
+        @keyframes headerGlow {
+            from {
+                opacity: .5;
+                transform: translateX(-8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(8px)
             }
         }
 
         .ai-header-inner {
             position: relative;
+            z-index: 1;
             display: flex;
             align-items: center;
-            gap: .8rem;
+            gap: .85rem
+        }
+
+        /* Animated avatar ring */
+        .ai-avatar-wrap {
+            position: relative;
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px
+        }
+
+        .ai-avatar-ring {
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            background: conic-gradient(from var(--ringSpin, 0deg), #8b5cf6, #ec4899, #f59e0b, #10b981, #8b5cf6);
+            animation: ringSpin 2.5s linear infinite;
+            filter: blur(1px);
+        }
+
+        @keyframes ringSpin {
+            to {
+                --ringSpin: 360deg
+            }
         }
 
         .ai-avatar {
-            width: 46px;
-            height: 46px;
+            position: relative;
+            z-index: 1;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            background: linear-gradient(135deg, #1a0533, #2d1060);
+            border: 2px solid #07071a;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
-            flex-shrink: 0;
-            position: relative;
-            box-shadow: 0 4px 16px rgba(139, 92, 246, .5);
-            animation: aiAF 3s ease-in-out infinite;
+            font-size: 1.5rem;
+            animation: avatarFloat 3s ease-in-out infinite;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
         }
 
-        @keyframes aiAF {
+        @keyframes avatarFloat {
 
             0%,
             100% {
-                transform: translateY(0) rotate(0deg);
+                transform: translateY(0) scale(1)
             }
 
             33% {
-                transform: translateY(-3px) rotate(3deg);
+                transform: translateY(-3px) scale(1.04)
             }
 
             66% {
-                transform: translateY(-2px) rotate(-2deg);
+                transform: translateY(-2px) scale(1.02)
             }
         }
 
         .ai-status-dot {
             position: absolute;
-            bottom: 2px;
-            right: 2px;
+            bottom: 1px;
+            right: 1px;
+            z-index: 2;
             width: 11px;
             height: 11px;
             background: #10b981;
             border-radius: 50%;
-            border: 2px solid var(--ai-dark);
-            animation: aiSP 1.5s ease-in-out infinite;
+            border: 2px solid #07071a;
+            animation: statusPulse 1.8s ease-in-out infinite;
         }
 
-        @keyframes aiSP {
+        @keyframes statusPulse {
 
             0%,
             100% {
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, .6);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, .7)
             }
 
             50% {
-                box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+                box-shadow: 0 0 0 7px rgba(16, 185, 129, 0)
             }
         }
 
         .ai-header-text .ai-name {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Syne', sans-serif;
             font-weight: 800;
             font-size: .95rem;
-            color: #fff;
+            background: linear-gradient(90deg, #e0c7ff, #fda4d5, #fde68a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             line-height: 1.2;
         }
 
         .ai-header-text .ai-tagline {
-            font-size: .7rem;
-            color: rgba(255, 255, 255, .65);
-            font-weight: 600;
+            font-size: .67rem;
+            color: rgba(255, 255, 255, .5);
+            font-weight: 700;
+            margin-top: .15rem
         }
 
         .ai-close-btn {
             margin-left: auto;
-            background: rgba(255, 255, 255, .1);
-            border: 1px solid rgba(255, 255, 255, .15);
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .12);
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: rgba(255, 255, 255, .7);
-            font-size: .95rem;
-            transition: all .2s;
+            color: rgba(255, 255, 255, .65);
+            font-size: .9rem;
+            transition: all .22s;
             flex-shrink: 0;
         }
 
         .ai-close-btn:hover {
-            background: rgba(236, 72, 153, .4);
+            background: rgba(236, 72, 153, .5);
             color: #fff;
             transform: rotate(90deg);
+            border-color: transparent
         }
 
+        /* ────────────────────────────────────────────────
+   MODE PILLS
+──────────────────────────────────────────────── */
         .ai-modes {
+            position: relative;
+            z-index: 2;
             display: flex;
             gap: .4rem;
-            padding: .6rem 1rem;
-            background: rgba(0, 0, 0, .3);
-            border-bottom: 1px solid var(--ai-border);
+            padding: .55rem .9rem;
+            background: rgba(0, 0, 0, .35);
+            border-bottom: 1px solid var(--bb-border);
             overflow-x: auto;
             flex-shrink: 0;
             scrollbar-width: none;
         }
 
         .ai-modes::-webkit-scrollbar {
-            display: none;
+            display: none
         }
 
         .ai-mode-pill {
             white-space: nowrap;
-            padding: .28rem .75rem;
+            padding: .3rem .8rem;
             border-radius: 50px;
-            border: 1px solid var(--ai-border);
-            background: var(--ai-glass);
-            color: rgba(255, 255, 255, .6);
+            border: 1px solid var(--bb-border);
+            background: rgba(255, 255, 255, .05);
+            color: rgba(255, 255, 255, .55);
             font-size: .68rem;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
             transition: all .2s;
             font-family: 'Nunito', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-mode-pill::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--bb-purple), var(--bb-pink));
+            opacity: 0;
+            transition: opacity .2s;
+            border-radius: 50px;
+        }
+
+        .ai-mode-pill:hover::before,
+        .ai-mode-pill.ai-active::before {
+            opacity: 1
         }
 
         .ai-mode-pill:hover,
         .ai-mode-pill.ai-active {
-            background: linear-gradient(135deg, var(--ai-purple), var(--ai-pink));
             color: #fff;
             border-color: transparent;
-            box-shadow: 0 4px 12px rgba(139, 92, 246, .35);
+            box-shadow: 0 4px 14px rgba(139, 92, 246, .35)
         }
 
+        .ai-mode-pill span {
+            position: relative;
+            z-index: 1
+        }
+
+        /* ────────────────────────────────────────────────
+   MESSAGES
+──────────────────────────────────────────────── */
         .ai-messages {
+            position: relative;
+            z-index: 2;
             flex: 1;
             overflow-y: auto;
             padding: 1rem;
             display: flex;
             flex-direction: column;
-            gap: .8rem;
+            gap: .85rem;
             scrollbar-width: thin;
             scrollbar-color: rgba(139, 92, 246, .3) transparent;
         }
 
         .ai-messages::-webkit-scrollbar {
-            width: 4px;
+            width: 4px
         }
 
         .ai-messages::-webkit-scrollbar-thumb {
             background: rgba(139, 92, 246, .3);
-            border-radius: 2px;
+            border-radius: 2px
         }
 
         .ai-msg {
             display: flex;
             gap: .6rem;
             align-items: flex-end;
-            animation: aiMI .35s cubic-bezier(.34, 1.56, .64, 1) both;
+            animation: msgIn .4s cubic-bezier(.34, 1.56, .64, 1) both;
         }
 
-        @keyframes aiMI {
+        @keyframes msgIn {
             from {
                 opacity: 0;
-                transform: translateY(15px) scale(.92);
+                transform: translateY(18px) scale(.9)
             }
 
             to {
                 opacity: 1;
-                transform: none;
+                transform: none
             }
         }
 
         .ai-msg.ai-user {
-            flex-direction: row-reverse;
+            flex-direction: row-reverse
         }
 
         .ai-msg-avatar {
@@ -2484,119 +2645,104 @@
             justify-content: center;
             font-size: .85rem;
             flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(139, 92, 246, .4);
         }
 
         .ai-msg.ai-user .ai-msg-avatar {
-            background: linear-gradient(135deg, #3b82f6, #10b981);
+            background: linear-gradient(135deg, #3b82f6, #06b6d4)
         }
 
+        /* Glowing bubbles */
         .ai-bubble {
             max-width: 82%;
             padding: .75rem 1rem;
             border-radius: 18px 18px 18px 4px;
-            background: var(--ai-glass);
-            border: 1px solid var(--ai-border);
-            color: rgba(255, 255, 255, .92);
-            font-size: .85rem;
-            line-height: 1.65;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .1);
+            color: rgba(255, 255, 255, .9);
+            font-size: .84rem;
+            line-height: 1.7;
             position: relative;
             word-break: break-word;
+            transition: box-shadow .2s;
+        }
+
+        .ai-bubble::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(139, 92, 246, .4), rgba(236, 72, 153, .3), rgba(20, 184, 166, .2));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity .3s;
+            border-radius: 18px 18px 18px 4px;
+        }
+
+        .ai-bubble:hover::before {
+            opacity: 1
+        }
+
+        .ai-bubble:hover {
+            box-shadow: 0 6px 30px rgba(139, 92, 246, .25), 0 0 0 1px rgba(139, 92, 246, .3)
         }
 
         .ai-msg.ai-user .ai-bubble {
             border-radius: 18px 18px 4px 18px;
-            background: linear-gradient(135deg, rgba(59, 130, 246, .25), rgba(16, 185, 129, .2));
-            border-color: rgba(59, 130, 246, .3);
+            background: linear-gradient(135deg, rgba(59, 130, 246, .2), rgba(6, 182, 212, .15));
+            border-color: rgba(59, 130, 246, .35);
             text-align: right;
         }
 
         .ai-bubble .aie {
             display: block;
-            font-size: 1.5rem;
-            margin-bottom: .25rem;
+            font-size: 1.4rem;
+            margin-bottom: .2rem
         }
 
         .ai-bubble strong {
-            color: #fbbf24;
+            color: #fbbf24
         }
 
         .ai-bubble em {
-            color: #a78bfa;
+            color: #a78bfa
         }
 
         .ai-bubble code {
             background: rgba(139, 92, 246, .2);
             border-radius: 5px;
             padding: .1rem .35rem;
-            font-size: .8rem;
+            font-size: .78rem;
             color: #c4b5fd;
             font-family: 'Courier New', monospace;
         }
 
-        .ai-bubble pre {
-            background: rgba(0, 0, 0, .4);
-            border-radius: 10px;
-            padding: .8rem;
-            margin-top: .5rem;
-            overflow-x: auto;
-            border: 1px solid rgba(255, 255, 255, .1);
-            font-size: .78rem;
-            white-space: pre-wrap;
-        }
-
-        .ai-bubble pre code {
-            background: none;
-            padding: 0;
-        }
-
         .ai-bubble .ai-tag {
             display: inline-block;
-            background: rgba(139, 92, 246, .25);
-            border: 1px solid rgba(139, 92, 246, .4);
+            background: rgba(139, 92, 246, .2);
+            border: 1px solid rgba(139, 92, 246, .35);
             border-radius: 50px;
             padding: .1rem .5rem;
-            font-size: .7rem;
+            font-size: .68rem;
             color: #c4b5fd;
-            margin: .15rem .15rem 0 0;
+            margin: .15rem .1rem 0 0;
         }
 
-        .ai-bubble.ai-rainbow {
-            background: linear-gradient(135deg, rgba(236, 72, 153, .2), rgba(245, 158, 11, .2), rgba(16, 185, 129, .2));
-            border-color: rgba(236, 72, 153, .4);
-            animation: aiRB 3s linear infinite;
-        }
-
-        @keyframes aiRB {
-            0% {
-                border-color: rgba(236, 72, 153, .5);
-            }
-
-            33% {
-                border-color: rgba(245, 158, 11, .5);
-            }
-
-            66% {
-                border-color: rgba(16, 185, 129, .5);
-            }
-
-            100% {
-                border-color: rgba(236, 72, 153, .5);
-            }
-        }
-
+        /* ────────────────────────────────────────────────
+   TYPING INDICATOR
+──────────────────────────────────────────────── */
         .ai-typing {
             display: flex;
             align-items: center;
-            gap: .6rem;
-            padding: .5rem 0;
+            gap: .6rem
         }
 
         .ai-typing-dots {
             display: flex;
-            gap: .3rem;
+            gap: .35rem;
             padding: .65rem .9rem;
-            background: var(--ai-glass);
-            border: 1px solid var(--ai-border);
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid var(--bb-border);
             border-radius: 18px 18px 18px 4px;
         }
 
@@ -2604,66 +2750,99 @@
             width: 7px;
             height: 7px;
             border-radius: 50%;
-            background: rgba(139, 92, 246, .6);
-            animation: aiDB 1.2s ease-in-out infinite;
+            background: linear-gradient(135deg, var(--bb-purple), var(--bb-pink));
+            animation: dotBounce 1.3s ease-in-out infinite;
+            box-shadow: 0 0 6px rgba(139, 92, 246, .6);
+        }
+
+        .ai-typing-dots span:nth-child(1) {
+            animation-delay: 0s
         }
 
         .ai-typing-dots span:nth-child(2) {
-            animation-delay: .2s;
+            animation-delay: .18s;
+            background: linear-gradient(135deg, var(--bb-pink), var(--bb-amber))
         }
 
         .ai-typing-dots span:nth-child(3) {
-            animation-delay: .4s;
+            animation-delay: .36s;
+            background: linear-gradient(135deg, var(--bb-amber), var(--bb-teal))
         }
 
-        @keyframes aiDB {
+        @keyframes dotBounce {
 
             0%,
             80%,
             100% {
-                transform: translateY(0);
-                opacity: .5;
+                transform: translateY(0) scale(1);
+                opacity: .5
             }
 
             40% {
-                transform: translateY(-8px);
-                opacity: 1;
+                transform: translateY(-9px) scale(1.3);
+                opacity: 1
             }
         }
 
+        /* ────────────────────────────────────────────────
+   QUICK REPLIES
+──────────────────────────────────────────────── */
         .ai-quick-replies {
-            padding: .5rem .8rem;
+            position: relative;
+            z-index: 2;
+            padding: .5rem .9rem;
             display: flex;
             flex-wrap: wrap;
             gap: .4rem;
-            border-top: 1px solid var(--ai-border);
-            background: rgba(0, 0, 0, .25);
+            border-top: 1px solid var(--bb-border);
+            background: rgba(0, 0, 0, .3);
             flex-shrink: 0;
         }
 
         .ai-qr {
-            padding: .3rem .75rem;
+            padding: .3rem .8rem;
             border-radius: 50px;
-            border: 1px solid rgba(139, 92, 246, .4);
-            background: rgba(139, 92, 246, .1);
+            border: 1px solid rgba(139, 92, 246, .35);
+            background: rgba(139, 92, 246, .08);
             color: #c4b5fd;
             font-size: .7rem;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
             transition: all .2s;
             font-family: 'Nunito', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-qr::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, .3), rgba(236, 72, 153, .2));
+            opacity: 0;
+            transition: opacity .2s;
+        }
+
+        .ai-qr:hover::after {
+            opacity: 1
         }
 
         .ai-qr:hover {
-            background: rgba(139, 92, 246, .3);
+            color: #fff;
+            border-color: rgba(139, 92, 246, .6);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(139, 92, 246, .3);
+            box-shadow: 0 5px 18px rgba(139, 92, 246, .3)
         }
 
+        /* ────────────────────────────────────────────────
+   INPUT AREA
+──────────────────────────────────────────────── */
         .ai-input-area {
+            position: relative;
+            z-index: 2;
             padding: .8rem;
-            background: rgba(0, 0, 0, .4);
-            border-top: 1px solid var(--ai-border);
+            background: rgba(0, 0, 0, .45);
+            border-top: 1px solid var(--bb-border);
             display: flex;
             gap: .6rem;
             align-items: flex-end;
@@ -2672,18 +2851,18 @@
 
         .ai-input-wrap {
             flex: 1;
-            background: rgba(255, 255, 255, .07);
-            border: 1.5px solid var(--ai-border);
+            background: rgba(255, 255, 255, .06);
+            border: 1.5px solid rgba(255, 255, 255, .1);
             border-radius: 16px;
             display: flex;
             align-items: flex-end;
-            padding: .5rem .8rem;
-            transition: border-color .2s;
+            padding: .55rem .85rem;
+            transition: all .25s;
         }
 
         .ai-input-wrap:focus-within {
             border-color: rgba(139, 92, 246, .6);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, .12);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, .12), 0 0 20px rgba(139, 92, 246, .1);
         }
 
         .ai-input {
@@ -2701,90 +2880,77 @@
         }
 
         .ai-input::placeholder {
-            color: rgba(255, 255, 255, .3);
+            color: rgba(255, 255, 255, .28)
         }
 
+        /* Spinning conic send button */
         .ai-send-btn {
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--ai-purple), var(--ai-pink));
             border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1rem;
-            transition: all .2s;
             flex-shrink: 0;
-            box-shadow: 0 4px 14px rgba(139, 92, 246, .4);
+            position: relative;
+            overflow: hidden;
+            background: conic-gradient(from var(--sendSpin, 0deg), #8b5cf6, #ec4899, #f59e0b, #8b5cf6);
+            animation: sendSpin 3s linear infinite;
+            transition: transform .2s, box-shadow .2s;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, .45);
+        }
+
+        @keyframes sendSpin {
+            to {
+                --sendSpin: 360deg
+            }
+        }
+
+        .ai-send-btn::before {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b0094, #7a0060);
+            transition: opacity .2s;
+        }
+
+        .ai-send-btn span {
+            position: relative;
+            z-index: 1
         }
 
         .ai-send-btn:hover {
-            transform: scale(1.1) rotate(-10deg);
-            box-shadow: 0 6px 20px rgba(139, 92, 246, .6);
+            transform: scale(1.12) rotate(-12deg);
+            box-shadow: 0 6px 24px rgba(139, 92, 246, .7)
         }
 
         .ai-send-btn:active {
-            transform: scale(.95);
+            transform: scale(.94)
         }
 
-        .ai-stars {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            overflow: hidden;
+        /* ────────────────────────────────────────────────
+   FOOTER BAR
+──────────────────────────────────────────────── */
+        .ai-powered-bar {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: .26rem;
+            font-size: .56rem;
+            color: rgba(255, 255, 255, .2);
+            font-family: 'Nunito', sans-serif;
+            background: rgba(0, 0, 0, .5);
+            flex-shrink: 0;
+            letter-spacing: .04em;
         }
 
-        .ai-star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #fff;
-            border-radius: 50%;
-            animation: aiST ease-in-out infinite;
-        }
-
-        @keyframes aiST {
-
-            0%,
-            100% {
-                opacity: 0;
-                transform: scale(0);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .ai-course-card {
-            background: rgba(255, 255, 255, .06);
-            border: 1px solid rgba(255, 255, 255, .12);
-            border-radius: 12px;
-            padding: .6rem .9rem;
-            margin-top: .4rem;
-            font-size: .78rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all .2s;
-            cursor: pointer;
-        }
-
-        .ai-course-card:hover {
-            background: rgba(139, 92, 246, .2);
-            border-color: rgba(139, 92, 246, .4);
-            transform: translateX(3px);
-        }
-
-        .ai-course-card .ai-course-price {
-            color: #fbbf24;
-            font-weight: 800;
-            font-family: 'Poppins', sans-serif;
-        }
-
+        /* ────────────────────────────────────────────────
+   EMOJI RAIN
+──────────────────────────────────────────────── */
         .ai-emoji-rain {
             position: fixed;
             top: 0;
@@ -2792,47 +2958,104 @@
             right: 0;
             bottom: 0;
             pointer-events: none;
-            z-index: 99999;
+            z-index: 99999
         }
 
         .ai-rain-emoji {
             position: absolute;
             font-size: 1.5rem;
-            animation: aiED linear forwards;
+            animation: emojiDrop linear forwards;
             top: -40px;
         }
 
-        @keyframes aiED {
+        @keyframes emojiDrop {
             to {
                 transform: translateY(110vh) rotate(720deg);
-                opacity: 0;
+                opacity: 0
             }
         }
 
-        .ai-powered-bar {
-            text-align: center;
-            padding: .22rem;
-            font-size: .56rem;
-            color: rgba(255, 255, 255, .18);
-            font-family: 'Nunito', sans-serif;
-            background: rgba(0, 0, 0, .4);
-            flex-shrink: 0;
+        /* ────────────────────────────────────────────────
+   COURSE CARDS
+──────────────────────────────────────────────── */
+        .ai-course-card {
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 12px;
+            padding: .6rem .9rem;
+            margin-top: .45rem;
+            font-size: .78rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all .2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
+        .ai-course-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--bb-purple), var(--bb-pink));
+        }
+
+        .ai-course-card:hover {
+            background: rgba(139, 92, 246, .15);
+            border-color: rgba(139, 92, 246, .4);
+            transform: translateX(4px)
+        }
+
+        .ai-course-card .ai-course-price {
+            color: #fbbf24;
+            font-weight: 900;
+            font-family: 'Syne', sans-serif
+        }
+
+        /* ────────────────────────────────────────────────
+   MOBILE
+──────────────────────────────────────────────── */
         @media(max-width:480px) {
             .ai-window {
                 width: calc(100vw - 1.5rem);
                 right: .75rem;
-                bottom: 5rem;
+                bottom: 5.2rem;
                 height: calc(100vh - 7rem);
-                border-radius: 20px;
+                border-radius: 22px
             }
 
             .ai-launcher {
-                bottom: 4.8rem;
+                bottom: 1.4rem;
                 right: .75rem;
-                width: 54px;
-                height: 54px;
+                width: 56px;
+                height: 56px
+            }
+        }
+
+        /* BrainBot launcher — raised above WhatsApp */
+        .ai-launcher {
+            bottom: 7rem;
+            right: 2rem;
+        }
+
+        /* Chat window — raised accordingly */
+        .ai-window {
+            bottom: 11.5rem;
+            right: 2rem;
+        }
+
+        /* Mobile */
+        @media(max-width:480px) {
+            .ai-launcher {
+                bottom: 6.4rem;
+            }
+
+            .ai-window {
+                bottom: 10rem;
             }
         }
     </style>
@@ -3608,14 +3831,31 @@
     </footer>
     <!-- ai bot -->
 
-    <button class="ai-launcher" id="aiLauncher" onclick="aiToggle()" title="Chat with Aman Sir AI!">🤖<span
-            class="ai-notif" id="aiNotifBadge">!</span></button>
 
+    <div class="demo-bg"></div>
+    <div class="demo-text">
+        <h1>🧠 BrainBot Demo</h1>
+        <p>Click the 🤖 button in the bottom-right corner</p>
+    </div>
+
+    <!-- ─── LAUNCHER ─── -->
+    <button class="ai-launcher" id="aiLauncher" onclick="aiToggle()" title="Chat with BrainBot!">
+        <span class="bot-icon">🤖</span>
+        <span class="ai-notif" id="aiNotifBadge">!</span>
+    </button>
+
+    <!-- ─── WINDOW ─── -->
     <div class="ai-window" id="aiWindow">
+        <div class="ai-aurora"></div>
         <div class="ai-stars" id="aiStars"></div>
-        <div class="ai-header">
+
+        <div class="ai-header" id="aiDragHandle">
+            <div class="ai-header-glow"></div>
             <div class="ai-header-inner">
-                <div class="ai-avatar">🤖<div class="ai-status-dot"></div>
+                <div class="ai-avatar-wrap">
+                    <div class="ai-avatar-ring"></div>
+                    <div class="ai-avatar">🤖<div class="ai-status-dot"></div>
+                    </div>
                 </div>
                 <div class="ai-header-text">
                     <div class="ai-name">🧠 BrainBot by Aman Sir</div>
@@ -3624,32 +3864,38 @@
                 <button class="ai-close-btn" onclick="aiToggle()">✕</button>
             </div>
         </div>
+
         <div class="ai-modes">
-            <button class="ai-mode-pill ai-active" onclick="setMode(this,'general')">💬 General</button>
-            <button class="ai-mode-pill" onclick="setMode(this,'courses')">📚 Courses</button>
-            <button class="ai-mode-pill" onclick="setMode(this,'cs')">💻 CS Help</button>
-            <button class="ai-mode-pill" onclick="setMode(this,'math')">📐 Maths</button>
-            <button class="ai-mode-pill" onclick="setMode(this,'fun')">🎉 Fun Mode</button>
+            <button class="ai-mode-pill ai-active" onclick="setMode(this,'general')"><span>💬 General</span></button>
+            <button class="ai-mode-pill" onclick="setMode(this,'courses')"><span>📚 Courses</span></button>
+            <button class="ai-mode-pill" onclick="setMode(this,'cs')"><span>💻 CS Help</span></button>
+            <button class="ai-mode-pill" onclick="setMode(this,'math')"><span>📐 Maths</span></button>
+            <button class="ai-mode-pill" onclick="setMode(this,'fun')"><span>🎉 Fun Mode</span></button>
         </div>
+
         <div class="ai-messages" id="aiMessages"></div>
+
         <div class="ai-quick-replies">
-            <button class="ai-qr" onclick="aiQuickSend('What is oxygen?')">🧪 What is oxygen?</button>
-            <button class="ai-qr" onclick="aiQuickSend('What is Tally?')">🧾 What is Tally?</button>
-            <button class="ai-qr" onclick="aiQuickSend('About Aman Sir')">👨‍💻 About Aman Sir</button>
+            <button class="ai-qr" onclick="aiQuickSend('What is oxygen?')">🧪 Oxygen?</button>
+            <button class="ai-qr" onclick="aiQuickSend('What is Tally?')">🧾 Tally?</button>
+            <button class="ai-qr" onclick="aiQuickSend('About Aman Sir')">👨‍💻 Aman Sir</button>
             <button class="ai-qr" onclick="aiQuickSend('What are the fees?')">💰 Fees</button>
             <button class="ai-qr" onclick="aiQuickSend('Explain Python')">🐍 Python?</button>
             <button class="ai-qr" onclick="aiQuickSend('Tell me a joke')">😂 Joke!</button>
         </div>
+
         <div class="ai-input-area">
             <div class="ai-input-wrap">
                 <textarea class="ai-input" id="aiInput"
-                    placeholder="Ask me anything — science, maths, coding, jokes... 😄" rows="1"
+                    placeholder="Ask me anything — science, maths, coding, jokes… 😄" rows="1"
                     onkeydown="aiKeyDown(event)" oninput="aiAutoResize(this)"></textarea>
             </div>
-            <button class="ai-send-btn" id="aiSendBtn" onclick="aiSendMessage()">🚀</button>
+            <button class="ai-send-btn" id="aiSendBtn" onclick="aiSendMessage()"><span>🚀</span></button>
         </div>
+
         <div class="ai-powered-bar">BrainBot by Aman Sir · FuturePath Learning Institute · Phoolbagan, Kolkata</div>
     </div>
+
     <div class="ai-emoji-rain" id="aiEmojiRain"></div>
 
     <!-- FLOATING WHATSAPP -->
@@ -4059,6 +4305,229 @@ Please call back to schedule demo! ✅`;
             })();
         }
 
+        /* ═══════════════════════════════════════════════
+          Brain bot Ai code 
+        ═══════════════════════════════════════════════ */
+        (function spawnStars() {
+            const c = document.getElementById('aiStars');
+            for (let i = 0; i < 55; i++) {
+                const s = document.createElement('div');
+                s.className = 'ai-star';
+                const size = Math.random() * 2.5 + .5;
+                s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random() * 100}%;left:${Math.random() * 100}%;
+      animation:aiST ${2 + Math.random() * 4}s ${Math.random() * 5}s ease-in-out infinite;opacity:${Math.random() * .8 + .2}`;
+                c.appendChild(s);
+            }
+            const style = document.createElement('style');
+            style.textContent = `@keyframes aiST{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1)}}`;
+            document.head.appendChild(style);
+        })();
+
+        /* ═══════════════════════════════════════════════
+           STATE
+        ═══════════════════════════════════════════════ */
+        let isOpen = false, currentMode = 'general', isTyping = false;
+        const win = document.getElementById('aiWindow');
+        const msgs = document.getElementById('aiMessages');
+
+        /* ═══════════════════════════════════════════════
+           TOGGLE
+        ═══════════════════════════════════════════════ */
+        function aiToggle() {
+            isOpen = !isOpen;
+            win.classList.toggle('ai-open', isOpen);
+            document.getElementById('aiNotifBadge').style.display = isOpen ? 'none' : 'flex';
+            if (isOpen && msgs.children.length === 0) setTimeout(() => aiGreet(), 300);
+        }
+
+        /* ═══════════════════════════════════════════════
+           DRAG FROM HEADER
+        ═══════════════════════════════════════════════ */
+        (function initDrag() {
+            const handle = document.getElementById('aiDragHandle');
+            let dragging = false, ox = 0, oy = 0;
+            function onDown(e) {
+                if (e.target.closest('.ai-close-btn')) return;
+                dragging = true;
+                const r = win.getBoundingClientRect();
+                const cx = e.touches ? e.touches[0].clientX : e.clientX;
+                const cy = e.touches ? e.touches[0].clientY : e.clientY;
+                ox = cx - r.left; oy = cy - r.top;
+                win.style.transition = 'none';
+                handle.style.cursor = 'grabbing';
+            }
+            function onMove(e) {
+                if (!dragging) return;
+                const cx = e.touches ? e.touches[0].clientX : e.clientX;
+                const cy = e.touches ? e.touches[0].clientY : e.clientY;
+                let nx = cx - ox, ny = cy - oy;
+                nx = Math.max(0, Math.min(nx, window.innerWidth - win.offsetWidth));
+                ny = Math.max(0, Math.min(ny, window.innerHeight - win.offsetHeight));
+                win.style.left = nx + 'px'; win.style.top = ny + 'px';
+                win.style.right = 'auto'; win.style.bottom = 'auto';
+            }
+            function onUp() {
+                dragging = false;
+                win.style.transition = '';
+                handle.style.cursor = 'grab';
+            }
+            handle.addEventListener('mousedown', onDown);
+            handle.addEventListener('touchstart', onDown, { passive: true });
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('touchmove', onMove, { passive: true });
+            document.addEventListener('mouseup', onUp);
+            document.addEventListener('touchend', onUp);
+        })();
+
+        /* ═══════════════════════════════════════════════
+           MODE
+        ═══════════════════════════════════════════════ */
+        function setMode(el, mode) {
+            document.querySelectorAll('.ai-mode-pill').forEach(p => p.classList.remove('ai-active'));
+            el.classList.add('ai-active');
+            currentMode = mode;
+            const modeMsg = {
+                general: '💬 Switched to <strong>General</strong> mode! Ask me anything!',
+                courses: '📚 <strong>Courses</strong> mode activated! I know all about FuturePath programs.',
+                cs: '💻 <strong>CS Help</strong> mode! Ready for coding & computer science questions.',
+                math: '📐 <strong>Maths</strong> mode! Bring on the equations! 🔢',
+                fun: '🎉 <strong>Fun Mode</strong> engaged! Let\'s laugh and play! 😂'
+            };
+            addMsg('bot', modeMsg[mode]);
+        }
+
+        /* ═══════════════════════════════════════════════
+           GREET
+        ═══════════════════════════════════════════════ */
+        function aiGreet() {
+            addMsg('bot', '<span class="aie">👋</span>Hey there! I\'m <strong>BrainBot</strong>, your 24/7 AI study buddy from FuturePath Learning Institute! Ask me about <em>science</em>, <em>coding</em>, <em>maths</em>, <em>courses</em>, or anything at all!<br><br>What would you like to explore today? 🚀');
+        }
+
+        /* ═══════════════════════════════════════════════
+           ADD MESSAGE
+        ═══════════════════════════════════════════════ */
+        function addMsg(type, html) {
+            const wrap = document.createElement('div');
+            wrap.className = `ai-msg ${type === 'user' ? 'ai-user' : ''}`;
+            const avatar = document.createElement('div');
+            avatar.className = 'ai-msg-avatar';
+            avatar.textContent = type === 'user' ? '🧑' : '🤖';
+            const bubble = document.createElement('div');
+            bubble.className = 'ai-bubble';
+            bubble.innerHTML = html;
+            wrap.appendChild(avatar);
+            wrap.appendChild(bubble);
+            msgs.appendChild(wrap);
+            msgs.scrollTop = msgs.scrollHeight;
+            return bubble;
+        }
+
+        /* ═══════════════════════════════════════════════
+           TYPING
+        ═══════════════════════════════════════════════ */
+        function showTyping() {
+            const wrap = document.createElement('div');
+            wrap.className = 'ai-msg ai-typing';
+            wrap.id = 'aiTypingIndicator';
+            const avatar = document.createElement('div');
+            avatar.className = 'ai-msg-avatar';
+            avatar.textContent = '🤖';
+            const dots = document.createElement('div');
+            dots.className = 'ai-typing-dots';
+            dots.innerHTML = '<span></span><span></span><span></span>';
+            wrap.appendChild(avatar);
+            wrap.appendChild(dots);
+            msgs.appendChild(wrap);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+        function removeTyping() {
+            const t = document.getElementById('aiTypingIndicator');
+            if (t) t.remove();
+        }
+
+        /* ═══════════════════════════════════════════════
+           RESPONSE ENGINE
+        ═══════════════════════════════════════════════ */
+        const KB = {
+            oxygen: `<span class="aie">🧪</span><strong>Oxygen (O₂)</strong> is a colourless, odourless gas making up ~21% of Earth's atmosphere. It's essential for respiration and combustion. Discovered independently by <em>Scheele</em> and <em>Priestley</em> in the 1770s. Atomic number: <code>8</code>, symbol: <code>O</code>.`,
+            tally: `<span class="aie">🧾</span><strong>Tally</strong> is a popular Indian accounting software used for <em>GST billing</em>, payroll, inventory, and financial reporting. FuturePath offers a dedicated Tally course! Want details? <span class="ai-tag">📚 Tally Course</span>`,
+            python: `<span class="aie">🐍</span><strong>Python</strong> is a high-level, readable programming language great for beginners! Uses include <em>web dev</em>, <em>data science</em>, <em>AI/ML</em>, and automation.<br><pre><code>print("Hello from BrainBot! 🤖")</code></pre>`,
+            aman: `<span class="aie">👨‍💻</span><strong>Aman Sir</strong> is the founder of <em>FuturePath Learning Institute</em> in Phoolbagan, Kolkata. He's an expert in computers, coding, and professional courses. His mission: making quality tech education accessible to everyone! 🌟`,
+            fees: `<span class="aie">💰</span>Here are some popular courses at FuturePath:<div class="ai-course-card"><span>🖥️ Basic Computer Course</span><span class="ai-course-price">₹2,500</span></div><div class="ai-course-card"><span>🐍 Python Programming</span><span class="ai-course-price">₹4,000</span></div><div class="ai-course-card"><span>🧾 Tally with GST</span><span class="ai-course-price">₹3,500</span></div><div class="ai-course-card"><span>🌐 Web Development</span><span class="ai-course-price">₹5,500</span></div>`,
+            joke: `<span class="aie">😂</span>Why do programmers prefer dark mode?<br><br><strong>Because light attracts bugs! 🐛</strong><br><br><em>Ba dum tss! 🥁</em>`,
+            hello: `<span class="aie">👋</span>Hello! Great to see you! I'm <strong>BrainBot</strong> — ready to help with anything! What's on your mind today?`,
+            math: `<span class="aie">📐</span>I love maths! Try asking me about <em>algebra</em>, <em>geometry</em>, <em>trigonometry</em>, or any formula! What maths topic interests you? 🔢`,
+            js: `<span class="aie">⚡</span><strong>JavaScript</strong> is the language of the web! It runs in every browser and powers dynamic websites. Key concepts: <code>variables</code>, <code>functions</code>, <code>DOM manipulation</code>, and <code>async/await</code>. Want a tutorial?`,
+            html: `<span class="aie">🌐</span><strong>HTML</strong> (HyperText Markup Language) is the skeleton of every webpage! It uses <em>tags</em> like <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;div&gt;</code> to structure content. Combined with CSS & JS it creates amazing websites! 🚀`,
+            css: `<span class="aie">🎨</span><strong>CSS</strong> (Cascading Style Sheets) makes websites beautiful! It controls <em>colours</em>, <em>fonts</em>, <em>layouts</em>, and <em>animations</em>. Master CSS and you can build stunning UIs like this chatbot! 🌈`,
+            default: `<span class="aie">🤔</span>That's an interesting question! I'm still learning every day. For the best answer, I'd suggest:<br><span class="ai-tag">📖 Google Scholar</span><span class="ai-tag">💡 Ask Aman Sir</span><span class="ai-tag">📚 Study Materials</span><br><br>Is there anything else I can help with? 😊`
+        };
+
+        const jokes = ['Why did the array go to therapy? Too many indices of trauma! 😅', 'How do you comfort a JavaScript bug? You <code>console.log</code> it! 😂', 'Why do Java developers wear glasses? Because they don\'t C#! 🤓', 'A SQL query walks into a bar, approaches two tables and asks: "Can I <strong>JOIN</strong> you?" 😄'];
+        let jokeIdx = 0;
+
+        function getResponse(msg) {
+            const m = msg.toLowerCase();
+            if (currentMode === 'fun' || m.includes('joke') || m.includes('funny')) { const j = jokes[jokeIdx++ % jokes.length]; jokeIdx %= jokes.length; return '<span class="aie">😂</span>' + j; }
+            if (m.includes('oxygen') || m.includes('o2')) return KB.oxygen;
+            if (m.includes('tally')) return KB.tally;
+            if (m.includes('python')) return KB.python;
+            if (m.includes('aman') || m.includes('sir') || m.includes('teacher')) return KB.aman;
+            if (m.includes('fee') || m.includes('price') || m.includes('cost') || m.includes('charge')) return KB.fees;
+            if (m.includes('hello') || m.includes('hi') || m.includes('hey')) return KB.hello;
+            if (m.includes('math') || m.includes('maths') || m.includes('formula')) return KB.math;
+            if (m.includes('javascript') || m.includes('js')) return KB.js;
+            if (m.includes('html')) return KB.html;
+            if (m.includes('css') || m.includes('style')) return KB.css;
+            if (currentMode === 'courses') return KB.fees;
+            if (currentMode === 'math') return KB.math;
+            return KB.default;
+        }
+
+        /* ═══════════════════════════════════════════════
+           SEND
+        ═══════════════════════════════════════════════ */
+        function aiSendMessage() {
+            const input = document.getElementById('aiInput');
+            const txt = input.value.trim();
+            if (!txt || isTyping) return;
+            input.value = ''; input.style.height = 'auto';
+            document.getElementById('aiNotifBadge').style.display = 'none';
+            addMsg('user', txt);
+            isTyping = true;
+            document.getElementById('aiSendBtn').disabled = true;
+            showTyping();
+            setTimeout(() => {
+                removeTyping();
+                addMsg('bot', getResponse(txt));
+                isTyping = false;
+                document.getElementById('aiSendBtn').disabled = false;
+                if (currentMode === 'fun') emojiRain(['🎉', '🎊', '🎈', '😂', '🤣', '🥳']);
+            }, 700 + Math.random() * 800);
+        }
+        function aiQuickSend(t) { document.getElementById('aiInput').value = t; aiSendMessage(); }
+        function aiKeyDown(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); aiSendMessage(); } }
+        function aiAutoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 80) + 'px'; }
+
+        /* ═══════════════════════════════════════════════
+           EMOJI RAIN
+        ═══════════════════════════════════════════════ */
+        function emojiRain(emojis) {
+            const rain = document.getElementById('aiEmojiRain');
+            for (let i = 0; i < 14; i++) {
+                setTimeout(() => {
+                    const e = document.createElement('div');
+                    e.className = 'ai-rain-emoji';
+                    e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    e.style.left = Math.random() * 100 + '%';
+                    const dur = 1.5 + Math.random() * 1.5;
+                    e.style.animationDuration = dur + 's';
+                    e.style.fontSize = (1.2 + Math.random()) + 'rem';
+                    rain.appendChild(e);
+                    setTimeout(() => e.remove(), dur * 1000 + 100);
+                }, i * 100);
+            }
+        }
 
     </script>
     <script src="brainbot.js"></script>
