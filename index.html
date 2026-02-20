@@ -2536,8 +2536,12 @@
             background: rgba(0, 0, 0, .35);
             border-bottom: 1px solid var(--bb-border);
             overflow-x: auto;
+            overflow-y: visible;
             flex-shrink: 0;
             scrollbar-width: none;
+            flex-wrap: nowrap;
+            -webkit-overflow-scrolling: touch;
+            min-width: 0;
         }
 
         .ai-modes::-webkit-scrollbar {
@@ -4556,6 +4560,7 @@ Please call back to schedule demo! ✅`;
 </body>
 
 </html>
+
 
 
 
