@@ -2549,6 +2549,11 @@
         }
 
         .ai-mode-pill {
+            flex-shrink: 0;
+            /* ADD this property to existing .ai-mode-pill */
+        }
+
+        .ai-mode-pill {
             white-space: nowrap;
             padding: .3rem .8rem;
             border-radius: 50px;
@@ -3023,7 +3028,12 @@
         /* ────────────────────────────────────────────────
    MOBILE
 ──────────────────────────────────────────────── */
-     /* ── Desktop default (unchanged) ── */
+        /* ──────────────────────────────────────────────
+   MOBILE FIX — Replace your existing mobile 
+   @media blocks with these
+──────────────────────────────────────────────── */
+
+        /* ── Desktop default (unchanged) ── */
         .ai-launcher {
             bottom: 2rem;
             left: 1.5rem;
@@ -4560,7 +4570,3 @@ Please call back to schedule demo! ✅`;
 </body>
 
 </html>
-
-
-
-
